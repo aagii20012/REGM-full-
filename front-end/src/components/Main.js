@@ -22,6 +22,9 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { color } from '@mui/system'
 
 function createData(name, number) {
     return { name, number };
@@ -39,6 +42,15 @@ function Main() {
 
 
     const styleTheme= {
+        addBorder:{
+            border:"1px solid #E5E5E5",
+            padding:"5px"
+        },
+        removeBorder:{
+            border:"none",
+            color:"black",
+            padding:"5px"
+        },
         tag:{
             font:"PT Serif",
             color:"#666666",
@@ -147,22 +159,27 @@ function Main() {
                     </Box>
                 </Grid>
                 <Grid item  xs={12}>
-                    <Box sx={{bgcolor: 'red',height: 50 , mt:5}}
+                    <Box sx={{mt:5}}
                     justifyContent="center"
                     display= 'flex'
                     alignItems= 'center'
                     flexWrap= 'wrap'
                     textAlign='center'
                     >
-                        <ButtonGroup size="small" aria-label="small button group">
-                            <Button key="OLDER POST">OLDER POST</Button>
-                            <Button key="1">1</Button>
-                            <Button key="2">2</Button>
-                            <Button key="3">3</Button>
-                            <Button key="...">...</Button>
-                            <Button key="8">8</Button>
-                            <Button key="NEXT POST">NEXT POST</Button>
-                        </ButtonGroup>
+                        <div>
+                            <ButtonGroup size="small" aria-label="small button group" 
+                            style={styleTheme.addBorder}>
+                            <Button key="OLDER POST" style={styleTheme.removeBorder} >
+                                    <ArrowBackIosIcon fontSize="small" color="disabled"/>OLDER POST</Button>
+                                <Button key="1" style={styleTheme.removeBorder}>1</Button>
+                                <Button key="2" style={styleTheme.removeBorder}>2</Button>
+                                <Button key="3" style={styleTheme.removeBorder}>3</Button>
+                                <Button key="..." style={styleTheme.removeBorder}>...</Button>
+                                <Button key="8" style={styleTheme.removeBorder}>8</Button>
+                                <Button key="NEXT POST" style={styleTheme.removeBorder}>NEXT POST
+                                <ArrowForwardIosIcon fontSize="small" color="disabled"/></Button>
+                            </ButtonGroup>
+                        </div>
                     </Box>
                 </Grid>
             </Grid>
