@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './reportWebVitals'
 import Navbar from './components/Navbar'
 import Suggest from './components/Suggest'
 import Main from './components/Main'
+import Footer from './components/Footer'
 
 ReactDOM.render(
   <React.StrictMode>
     <Navbar />
     <Suggest />
     <Main />
+    <Footer />
   </React.StrictMode>,
   document.getElementById('root')
 );

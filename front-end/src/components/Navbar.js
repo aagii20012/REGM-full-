@@ -16,6 +16,18 @@ import { borderRight } from '@mui/system';
 const pages = ['Home ','Recipes','Article','Contact','Purchase'];
 
 const Navbar = () => {
+  const styleTheme= {
+    link:{
+      fontSize: '14px',
+      lineHeight:'18.55px',
+      color:'#171717',
+    },
+    linkActive:{
+      fontSize: '14px',
+      lineHeight:'18.55px',
+      color:'#C9A96E',
+    }
+  }
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
   
@@ -48,7 +60,7 @@ const Navbar = () => {
               LOGO
             </Typography>
   
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } ,color: 'common.black'}}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -79,7 +91,7 @@ const Navbar = () => {
               >
                 {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center" color="common.black">{page}</Typography>
+                    <Typography textAlign="center" >{page}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -97,15 +109,27 @@ const Navbar = () => {
             
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }
             ,justifyContent: 'flex-end'}}>
-              {pages.map((page) => (
-                <Button
+              {pages.map((page,index) => {
+                if(index==0){
+                  return <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, display: 'block' }}
+                    style={styleTheme.linkActive}
+                    >
+                      {page}
+                    </Button>
+                }else{
+                  return <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page}
-                </Button>
-            ))}
+                  sx={{ my: 2, display: 'block' }}
+                  style={styleTheme.link}
+                  >
+                    {page}
+                  </Button>
+                }
+              })}
             </Box>
           </Toolbar>
         </Container>

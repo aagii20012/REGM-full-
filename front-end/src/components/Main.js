@@ -24,7 +24,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { color } from '@mui/system'
 
 function createData(name, number) {
     return { name, number };
@@ -95,7 +94,21 @@ function Main() {
             margin: '0',
             padding: '0',
             color:"#C9A96E"
-        }
+        },
+        name2:{
+            fontSize: '16px',
+            lineHeight:'21.2px',
+            margin: '0',
+            padding: '0',
+            color:'#171717'
+        },
+        title2:{
+            fontSize: '14px',
+            lineHeight:'18.55px',
+            margin: '0',
+            padding: '0',
+            color:'#B1B1B1'
+        },
 
     };
 
@@ -104,57 +117,57 @@ function Main() {
         <Grid container spacing={20} padding="50px 0" >
             <Grid container item xs={8} spacing={5}  >
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="Tourism" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="sport" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="fashion" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="clothes" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="fashion" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="clothes" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={12} >
-                    <Box sx={{bgcolor: 'red',height: 500 }}>
+                    <Box sx={{height: 500 }}>
                         <BigPost name="Summer" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="Autumn" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="clothes" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="Summer" url="little"/>
                     </Box>
                 </Grid>
                 <Grid  item  xs={6} >
-                    <Box sx={{bgcolor: 'red',height: 400 }}>
+                    <Box sx={{height: 400 }}>
                         <Post name="Summer" url="little"/>
                     </Box>
                 </Grid>
@@ -185,7 +198,7 @@ function Main() {
             </Grid>
             <Grid item xs={4}>
                 <Stack spacing={5}>
-                    <Box sx={{bgcolor: 'red',height: 430 }}>
+                    <Box sx={{height: 430 }}>
                     <Card square={true} style={styleTheme.border}>
                         <CardHeader
                             component="button"
@@ -201,8 +214,8 @@ function Main() {
                         />
                         <CardContent>
                             <Typography variant="body2" color="text.secondary" align="center">
-                                <p style={styleTheme.name}>Kate Willems</p>
-                                <p style={styleTheme.title}>Food & cooking bloger</p>
+                                <p style={styleTheme.name2}>Kate Willems</p>
+                                <p style={styleTheme.title2}>Food & cooking bloger</p>
                                 <p style={styleTheme.comment}>Hi, I'm Sonia. Cooking is the way I express my creative side to the world. Welcome to my Kitchen Corner on…</p>
                             </Typography>
                             <div style={styleTheme.bottom} >
