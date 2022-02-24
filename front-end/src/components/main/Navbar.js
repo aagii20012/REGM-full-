@@ -7,11 +7,11 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { borderRight } from '@mui/system';
+import {
+  Link
+} from "react-router-dom";
 
 const pages = ['Home ','Recipes','Article','Contact','Purchase'];
 
@@ -130,6 +130,13 @@ const Navbar = () => {
                   </Button>
                 }
               })}
+              <Button
+                  key="Login"
+                  sx={{ my: 2, display: 'block' }}
+                  style={styleTheme.link}
+                  >
+                  <Link to="/login">Login</Link>
+                </Button>
             </Box>
           </Toolbar>
         </Container>

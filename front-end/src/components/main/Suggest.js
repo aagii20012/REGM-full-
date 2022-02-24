@@ -27,8 +27,8 @@ function Suggest() {
         }
     };
   return (
-    <Box  sx={{display: 'flex',justifyContent: 'center' }} minHeight='700px' width={'100%'}
-    style={{backgroundImage:"url(img/bigPic.jpg)",backgroundSize: "fill",backgroundRepeat: "no-repeat"}}> 
+    <Box  sx={{display: 'flex',justifyContent: 'center' }} height='700px' width={'100%'}
+    style={{backgroundImage:"url(img/bigPic.jpg)",backgroundSize: "cover",backgroundRepeat: "no-repeat"}}> 
         <Box sx={{ alignSelf: 'flex-end',mb:8,ml:-4, width:"50%"}}>
             <p style={styleTheme.name} >Vehicle</p>
             <p style={styleTheme.title}>One of Saturn’s largest rings may be newer than anyone</p>
