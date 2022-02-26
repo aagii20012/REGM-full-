@@ -5,7 +5,7 @@ module.exports = async (args) => {
     delete form._id
     const user = await User.findByIdAndUpdate(args._id, form, {new: true});
     
-    console.log("update")
+    console.log("update user")
     console.log(user);
     return user
 }

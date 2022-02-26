@@ -1,10 +1,12 @@
 const User = require('../../../model/model');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
-module.exports = async (args) => {
-    console.log(args)
+module.exports = async (parent, args, context, info) => {
+    args.password = bcrypt.hashSync(args.password, 10);
+    console.log(args.password)
+    
     const user = await User(args).save();
     
-    console.log("getUser")
-    console.log(user);
     return user
 }

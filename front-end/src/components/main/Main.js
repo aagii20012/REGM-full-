@@ -1,5 +1,5 @@
 import { Container, Stack } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid,Box } from '@mui/material'
 import Post from './Post'
 import BigPost from './BigPost'
@@ -10,12 +10,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -24,22 +18,27 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Category from './Category'
+import {useQuery,gql} from "@apollo/client";
 
-function createData(name, number) {
-    return { name, number };
-  }
+const POSTS= gql`
+    {
+        getAllPost{
+            title,
+            category,
+            date,
+            person,
+            comment,
+            img
+        }
+    }
+  `;
 
 function Main() {
+    const { loading, error, data } = useQuery(POSTS);
 
-    const rows = [
-        createData('Fashion', 23),
-        createData('Style & clothes', 7),
-        createData('Minimalism', 16),
-        createData('Black & White', 5),
-        createData('Modern clothes', 12),
-      ];
-
-
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
     const styleTheme= {
         addBorder:{
             border:"1px solid #E5E5E5",
@@ -116,61 +115,32 @@ function Main() {
     <Container >
         <Grid container spacing={20} padding="50px 0" >
             <Grid container item xs={8} spacing={5}  >
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="Tourism" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="sport" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="fashion" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="clothes" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="fashion" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="clothes" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={12} >
-                    <Box sx={{height: 500 }}>
-                        <BigPost name="Summer" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="Autumn" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="clothes" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="Summer" url="little"/>
-                    </Box>
-                </Grid>
-                <Grid  item  xs={6} >
-                    <Box sx={{height: 400 }}>
-                        <Post name="Summer" url="little"/>
-                    </Box>
-                </Grid>
+                {
+                   data?  data.getAllPost.map((post,i)=>{
+                    if(i===6){
+                        return (
+                            <Grid  item  xs={12} >
+                                <Box sx={{height: 500 }}>
+                                    <BigPost name={post.category} url={post.img} title={post.title}
+                                     date={post.date} person={post.person}/>
+                                </Box>
+                            </Grid>
+                        )
+                    }
+                    return (<Grid  item  xs={6} key={i}>
+                        <Box sx={{height: 400 }}>
+                            <Post name={post.category} url={post.img} title={post.title}
+                            date={post.date} person={post.person}/>
+                        </Box>
+                    </Grid>)
+                }): 
+                    <Grid  item  xs={6}> 
+                        <Typography>
+                            No data here
+                        </Typography>
+                    </Grid>
+                
+                }
                 <Grid item  xs={12}>
                     <Box sx={{mt:5}}
                     justifyContent="center"
@@ -232,28 +202,7 @@ function Main() {
                     </Box>
                     <Box>
                         <Stack spacing={10}>
-                            <Box >
-                            <Button fullWidth sx={ { borderRadius: 0 } }
-                                style={styleTheme.buttonColor}
-                            variant="contained" size="large">Categories</Button>
-                            <TableContainer component={Paper} sx={{mt:2}}>
-                                <Table >
-                                    <TableBody>
-                                    {rows.map((row) => (
-                                        <TableRow
-                                        key={row.name}
-                                        width="30%"
-                                        >
-                                        <TableCell width="70%" component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell width="70%" align="right">{row.number}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            </Box>
+                            <Category/>
                             <Box sx={{ }}>
                                 <Button fullWidth sx={ { borderRadius: 0, } }
                                 style={styleTheme.buttonColor}

@@ -1,14 +1,23 @@
 const {userSchema, userResolver} = require('./schema/user/user');
-// const {merge} = require('lodash');
+const {postSchema, postResolver} = require('./schema/post/post');
+const {categorySchema, categoryResolver} = require('./schema/category/category');
+const {merge} = require('lodash');
 
 const schema = [
-    userSchema
-];
+    userSchema,
+    postSchema,
+    categorySchema,]
+;
+
 
 // const resolver = merge(
 //     userResolver
 // )
-const resolver = userResolver
+const resolver = merge(
+    postResolver,
+    userResolver,
+    categoryResolver
+)
 
 
 module.exports = {schema, resolver};

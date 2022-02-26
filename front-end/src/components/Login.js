@@ -12,18 +12,49 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { gql, useQuery } from '@apollo/client';
+import { Alert } from '@mui/material';
+
 
 const theme = createTheme();
 
+const VALIDATION=gql`
+  query($email: String!, $password: String!){
+    getUser(email:$email
+      password:$password){
+      _id
+    }
+  }
+  `
+
 function Login() {
+  const [email,setEmail]=React.useState("")
+  const [pass,setPass]=React.useState("")
+  const [waiting,setWaiting]=React.useState(true)
+  const [errorMessage,setErrorMessage]=React.useState("")
+
+  const {loading,error,data}=useQuery(VALIDATION,{variables:{
+    email:email,
+    password:pass,
+  }})
+  if(loading) console.log("loading")
+  if(data){
+    console.log("data is", data)
+  }
+  if(error && !waiting){ console.log("error is", error.message) 
+  setErrorMessage(error.message)
+  setWaiting(true)}
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
+        const formValue = new FormData(event.currentTarget);
+        if(formValue.get("email") && formValue.get("password")){
+          setEmail(formValue.get("email"))
+          setPass(formValue.get("password"))
+          setWaiting(false)
+        }else{
+          setErrorMessage("Please enter email and password")
+        }
       };
     
       return (
@@ -44,6 +75,7 @@ function Login() {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
+              {errorMessage && <Alert variant="outlined" severity="error">{errorMessage}</Alert>}
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"

@@ -9,6 +9,7 @@ const userSchema = gql`
             email: String
             password: String
             isAdmin: String
+            message: String
         ): User
         getAllUser: [User]
     }
@@ -42,7 +43,8 @@ const userSchema = gql`
 
 const userResolver = {
     Query: {
-        getUser: require('../../queries/user/getUser')
+        getUser: require('../../queries/user/getUser'),
+        getAllUser: require('../../queries/user/getAllUser')
     },
     Mutation: {
         createUser: require('../../mutations/user/createUser'),

@@ -5,8 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 
-function Post({name,url}) {
-    const imageUrl="img/"+ url +".jpg"
+function Post({name,url,title,date,person}) {
+    const imageUrl= url
     const styleTheme= {
         border:{
             border:'none',
@@ -23,6 +23,7 @@ function Post({name,url}) {
             lineHeight:'28px',
             margin: '0',
             padding: '0',
+            color:"#171717"
         },
         name:{
             fontSize: '12px',
@@ -42,10 +43,10 @@ function Post({name,url}) {
         alt="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary" align="center">
+        <Typography variant="body2" color="text.secondary" align="center" sx={{px:2}}>
             <p style={styleTheme.name} >{name.toUpperCase()}</p>
-            <p style={styleTheme.title}>One of Saturn’s largest rings may be newer than anyone</p>
-            <p style={styleTheme.comment}>June 6, 2019 By Rickie Baroch 4 comments</p>
+            <p style={styleTheme.title}>{title}</p>
+            <p style={styleTheme.comment}>{date} By {person}</p>
         </Typography>
       </CardContent>
       
