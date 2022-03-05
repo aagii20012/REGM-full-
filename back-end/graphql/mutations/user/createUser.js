@@ -4,7 +4,7 @@ const saltRounds = 10;
 
 module.exports = async (parent, args, context, info) => {
     args.password = bcrypt.hashSync(args.password, 10);
-    console.log(args.password)
+    console.log("here")
     
     const user = await User(args).save();
     

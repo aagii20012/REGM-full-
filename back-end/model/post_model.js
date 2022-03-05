@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+const paginate = require('mongoose-paginate-v2');
 
 const PostSchema = new mongoose.Schema({
     title:{type:String,required: true },
@@ -9,6 +10,8 @@ const PostSchema = new mongoose.Schema({
     description:{type:String,required: true},
     img:{type:String,required: true }
 },{collection:'Post'})
+
+PostSchema.plugin(paginate)
 
 const model=mongoose.model('PostSchema',PostSchema)
 

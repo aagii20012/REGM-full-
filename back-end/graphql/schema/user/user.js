@@ -8,7 +8,7 @@ const userSchema = gql`
             last_name: String
             email: String
             password: String
-            isAdmin: String
+            isAdmin: Boolean
             message: String
         ): User
         getAllUser: [User]
@@ -19,7 +19,7 @@ const userSchema = gql`
             last_name: String
             email: String
             password: String
-            isAdmin: String
+            isAdmin: Boolean
         ): User
         updateUser(
             _id: ID!
@@ -27,7 +27,7 @@ const userSchema = gql`
             last_name: String
             email: String
             password: String
-            isAdmin: String
+            isAdmin: Boolean
         ): User
         deleteUser(_id: ID!) : ID
     }
@@ -37,7 +37,7 @@ const userSchema = gql`
         last_name: String
         email: String
         password: String
-        isAdmin: String
+        isAdmin: Boolean
     }
 `
 

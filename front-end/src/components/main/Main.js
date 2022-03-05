@@ -21,25 +21,51 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Category from './Category'
 import {useQuery,gql} from "@apollo/client";
 
+import Pagination from '@mui/material/Pagination';
+
 const POSTS= gql`
-    {
-        getAllPost{
-            title,
-            category,
-            date,
-            person,
-            comment,
-            img
+    query($page: Int!, $limit: Int!){
+        getPostByLimit(page:$page,limit:$limit)
+        {
+            paginator{
+            hasNextPage
+            hasPrevPage
+            prev
+            next
+            slNo
+            postCount
+            perPage
+            pageCount
+            currentPage
+            }
+            posts{
+                title,
+                category,
+                date,
+                person,
+                comment,
+                img
+            }
         }
     }
   `;
 
 function Main() {
-    const { loading, error, data } = useQuery(POSTS);
+    let [page, setPage] = useState(1);
+
+    const handleChange = (e, p) => {
+        setPage(p);
+    };
+
+    const { loading, error, data } = useQuery(POSTS,{variables:{
+        page:page,
+        limit:9,
+      }});
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
-    const styleTheme= {
+    if(data) console.log(data.getPostByLimit.paginator)
+        const styleTheme= {
         addBorder:{
             border:"1px solid #E5E5E5",
             padding:"5px"
@@ -116,7 +142,7 @@ function Main() {
         <Grid container spacing={20} padding="50px 0" >
             <Grid container item xs={8} spacing={5}  >
                 {
-                   data?  data.getAllPost.map((post,i)=>{
+                   data?  data.getPostByLimit.posts.map((post,i)=>{
                     if(i===6){
                         return (
                             <Grid  item  xs={12} >
@@ -152,15 +178,11 @@ function Main() {
                         <div>
                             <ButtonGroup size="small" aria-label="small button group" 
                             style={styleTheme.addBorder}>
-                            <Button key="OLDER POST" style={styleTheme.removeBorder} >
-                                    <ArrowBackIosIcon fontSize="small" color="disabled"/>OLDER POST</Button>
-                                <Button key="1" style={styleTheme.removeBorder}>1</Button>
-                                <Button key="2" style={styleTheme.removeBorder}>2</Button>
-                                <Button key="3" style={styleTheme.removeBorder}>3</Button>
-                                <Button key="..." style={styleTheme.removeBorder}>...</Button>
-                                <Button key="8" style={styleTheme.removeBorder}>8</Button>
-                                <Button key="NEXT POST" style={styleTheme.removeBorder}>NEXT POST
-                                <ArrowForwardIosIcon fontSize="small" color="disabled"/></Button>
+                                <Pagination 
+                                count={data.getPostByLimit.paginator.pageCount}
+                                defaultPage={data.getPostByLimit.paginator.currentPage} 
+                                siblingCount={0}
+                                onChange={handleChange} />
                             </ButtonGroup>
                         </div>
                     </Box>

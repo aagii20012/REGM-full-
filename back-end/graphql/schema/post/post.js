@@ -12,6 +12,10 @@ const postSchema = gql`
             description:String,
             img:String,
         ): Post
+        getPostByLimit(
+            page:Int,
+            limit:Int
+        ): PostPanitor!
         getAllPost: [Post]
     }
     extend type Mutation {
@@ -46,12 +50,29 @@ const postSchema = gql`
         description:String,
         img:String,
     }
+    type PostPanitor {
+        posts: [Post!]
+        paginator:PostLabel
+    }
+
+    type PostLabel{
+        postCount: Int!
+        perPage: Int!
+        pageCount: Int!
+        currentPage: Int!
+        slNo: Int!
+        hasNextPage: Boolean!
+        hasPrevPage: Boolean!
+        prev: Int
+        next: Int
+    }
 `
 
 const postResolver = {
     Query: {
         getPost: require('../../queries/post/getPost'),
-        getAllPost: require('../../queries/post/getAllPost')
+        getAllPost: require('../../queries/post/getAllPost'),
+        getPostByLimit: require('../../queries/post/getPostByLimit'),
     },
     Mutation: {
         createPost: require('../../mutations/post/createPost'),
