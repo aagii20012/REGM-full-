@@ -64,7 +64,7 @@ function Main() {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
-    if(data) console.log(data.getPostByLimit.paginator)
+    if(data) console.log(data)
         const styleTheme= {
         addBorder:{
             border:"1px solid #E5E5E5",
@@ -142,7 +142,7 @@ function Main() {
         <Grid container spacing={20} padding="50px 0" >
             <Grid container item xs={8} spacing={5}  >
                 {
-                   data?  data.getPostByLimit.posts.map((post,i)=>{
+                   data.getPostByLimit.paginator.postCount>0?  data.getPostByLimit.posts.map((post,i)=>{
                     if(i===6){
                         return (
                             <Grid  item  xs={12} >
