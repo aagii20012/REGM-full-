@@ -42,8 +42,7 @@ export default function SignUp() {
   if (loading) console.log(loading)
   if (mutationError) console.log(mutationError);
   if(data){
-    localStorage.setItem('tokenIsId', data.getUser["_id"]);
-    navigate("/")
+    localStorage.setItem('tokenIsId', data.createUser["_id"]);
     navigate("/")
   }
   const handleSubmit = (event) => {
