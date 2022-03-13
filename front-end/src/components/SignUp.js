@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,21 +11,25 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { gql, useMutation } from "@apollo/client";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 const VALIDATION = gql`
-  mutation SignUp($first_name: String!, 
-    $last_name:String!, 
-    $email: String!, 
-    $password: String!){
-      createUser(first_name:$first_name
-      last_name:$last_name
-      email:$email
-      isAdmin:false
-      password:$password) {
-      _id
+  mutation SignUp(
+    $first_name: String!
+    $last_name: String!
+    $email: String!
+    $password: String!
+  ) {
+    createUser(
+      first_name: $first_name
+      last_name: $last_name
+      email: $email
+      isAdmin: false
+      password: $password
+    ) {
+      token
     }
   }
 `;
@@ -39,12 +43,15 @@ export default function SignUp() {
     email: false,
     password: false,
   });
-  if (loading) console.log(loading)
-  if (mutationError) console.log(mutationError);
-  if(data){
-    localStorage.setItem('tokenIsId', data.createUser["_id"]);
-    navigate("/")
-  }
+  useEffect(() => {
+    if (loading) console.log("loading", loading);
+    if (mutationError) console.log(mutationError);
+    if (data) {
+      console.log(data);
+      localStorage.setItem("tokenIsId", data.createUser["_id"]);
+      navigate("/");
+    }
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -62,6 +69,7 @@ export default function SignUp() {
       error.firstName || error.lastName || error.email || error.password;
 
     if (!hasError) {
+      console.log("here");
       SignUp({
         variables: {
           first_name: data.get("firstName"),

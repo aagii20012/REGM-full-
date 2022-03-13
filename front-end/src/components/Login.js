@@ -1,4 +1,4 @@
-import * as React from "react";
+import {useState,useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,26 +20,48 @@ const theme = createTheme();
 
 const VALIDATION = gql`
   query ($email: String!, $password: String!) {
-    getUser(email: $email, password: $password) {
-      _id
+    Login(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+const DECODE = gql`
+  query($token:String!){
+    Decode(token:$token)
+    {
+      isAdmin
     }
   }
 `;
 
 function Login() {
   let navigate = useNavigate();
-  const [Login, { data, loading, error }] = useLazyQuery(VALIDATION);
-  const [errorMessage, setErrorMessage] = React.useState("");
-
-  if (loading) console.log("loading");
-  if (data) {
-    localStorage.setItem('tokenIsId', data.getUser["_id"]);
-    navigate("/")
-  }
-  if (error) {
-    console.log("error is", error.message);
-    setErrorMessage(error.message);
-  }
+  const [Login] = useLazyQuery(VALIDATION,{
+    onCompleted:(encrypt)=>{
+      console.log(encrypt)
+      localStorage.setItem('token', encrypt.Login.token);
+      Decode({
+        variables:{
+          token:encrypt.Login.token
+        }
+      })
+    },
+    onError:(error)=>{
+      console.log("error is", error.message);
+      setErrorMessage(error.message);
+    }
+  });
+  const [Decode] = useLazyQuery(DECODE,{
+    onCompleted:(encrypt)=>{
+      console.log(encrypt.Decode.isAdmin)
+      if(encrypt.Decode.isAdmin)
+      {
+        navigate('/admin')
+      }
+      else navigate('/')
+    }
+  });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();

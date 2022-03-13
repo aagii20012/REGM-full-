@@ -2,14 +2,12 @@ const {gql} = require('apollo-server-express');
 
 const userSchema = gql`
     type Query {
-        getUser(
-            _id: ID
-            first_name: String
-            last_name: String
+        Login(
             email: String
             password: String
-            isAdmin: Boolean
-            message: String
+        ): Token
+        Decode(
+            token: String!
         ): User
         getAllUser: [User]
     }
@@ -20,7 +18,7 @@ const userSchema = gql`
             email: String
             password: String
             isAdmin: Boolean
-        ): User
+        ): Token
         updateUser(
             _id: ID!
             first_name: String
@@ -39,11 +37,15 @@ const userSchema = gql`
         password: String
         isAdmin: Boolean
     }
+    type Token{
+        token:String!
+    }
 `
 
 const userResolver = {
     Query: {
-        getUser: require('../../queries/user/getUser'),
+        Login: require('../../queries/user/getUser'),
+        Decode: require('../../queries/user/decodeToken'),
         getAllUser: require('../../queries/user/getAllUser')
     },
     Mutation: {

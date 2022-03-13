@@ -16,7 +16,7 @@ const pages = ["Home ", "Recipes", "Article", "Contact", "Purchase"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
-  const logIn = localStorage.getItem('tokenIsId');
+  const logIn = localStorage.getItem('token');
   const styleTheme = {
     link: {
       fontSize: "14px",
@@ -44,7 +44,8 @@ const Navbar = () => {
   };
 
   const handleCloseUserMenu = (e) => {
-    if(e=="Logout") localStorage.removeItem("tokenIsId")
+    if(e=="Logout") 
+    localStorage.removeItem("token")
     setAnchorElUser(null);
   };
 
