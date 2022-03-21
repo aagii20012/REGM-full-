@@ -15,12 +15,12 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { gql, useQuery, useMutation,useLazyQuery } from "@apollo/client";
+import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { Stack, TableHead ,Select,InputLabel,MenuItem  } from "@mui/material";
+import { Stack, TableHead, Select, InputLabel, MenuItem } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -52,22 +52,8 @@ const DELETE = gql`
 `;
 
 const UPDATE = gql`
-  mutation UpdateUser(
-    $_id: ID!
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-    $password: String!
-    $isAdmin:Boolean!
-  ) {
-    updateUser(
-      _id: $_id
-      first_name: $firstName
-      last_name: $lastName
-      email: $email
-      password: $password
-      isAdmin: $isAdmin
-    ) {
+  mutation UpdateUser($_id: ID!, $firstName: String!, $lastName: String!, $email: String!, $password: String!, $isAdmin: Boolean!) {
+    updateUser(_id: $_id, first_name: $firstName, last_name: $lastName, email: $email, password: $password, isAdmin: $isAdmin) {
       _id
       last_name
       first_name
@@ -78,36 +64,23 @@ const UPDATE = gql`
   }
 `;
 const CREATE = gql`
-  mutation SignUp(
-    $first_name: String!
-    $last_name: String!
-    $email: String!
-    $password: String!
-    $isAdmin: Boolean!
-  ) {
-    createUser(
-      first_name: $first_name
-      last_name: $last_name
-      email: $email
-      isAdmin: $isAdmin
-      password: $password
-    ) {
+  mutation SignUp($first_name: String!, $last_name: String!, $email: String!, $password: String!, $isAdmin: Boolean!) {
+    createUser(first_name: $first_name, last_name: $last_name, email: $email, isAdmin: $isAdmin, password: $password) {
       token
     }
   }
 `;
 const DECODE = gql`
-query($token:String!){
-  Decode(token:$token)
-  {
-    _id
-    last_name
-    first_name
-    email
-    password
-    isAdmin
+  query ($token: String!) {
+    Decode(token: $token) {
+      _id
+      last_name
+      first_name
+      email
+      password
+      isAdmin
+    }
   }
-}
 `;
 
 function TablePaginationActions(props) {
@@ -135,40 +108,16 @@ function TablePaginationActions(props) {
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
+      <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
         {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
+      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+        {theme.direction === "rtl" ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
+      <IconButton onClick={handleNextButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1} aria-label="next page">
+        {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
+      <IconButton onClick={handleLastPageButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1} aria-label="last page">
         {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
@@ -189,13 +138,13 @@ export default function Users() {
   const [rows, setRows] = useState([]);
   const [editIndex, setEditIndex] = React.useState();
   const { loading, data } = useQuery(USERS);
-  const [decode] = useLazyQuery(DECODE,{
-    onCompleted:(data)=>{
+  const [decode] = useLazyQuery(DECODE, {
+    onCompleted: (data) => {
       let newArr = [...rows];
-      newArr.push(data.Decode)
+      newArr.push(data.Decode);
       setRows(newArr);
       setOpen(false);
-    }
+    },
   });
   const [UpdateUser] = useMutation(UPDATE, {
     onCompleted: (data) => {
@@ -214,10 +163,10 @@ export default function Users() {
   const [CreateUser] = useMutation(CREATE, {
     onCompleted: (data) => {
       decode({
-        variables:{
-          token:data.createUser.token
-        }
-      })
+        variables: {
+          token: data.createUser.token,
+        },
+      });
     },
   });
 
@@ -229,8 +178,7 @@ export default function Users() {
   }, [loading]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -242,8 +190,8 @@ export default function Users() {
   };
 
   const handleCreate = () => {
-    setEditIndex()
-    setOpen(true)
+    setEditIndex();
+    setOpen(true);
   };
 
   const handleEdit = (id) => {
@@ -264,18 +212,17 @@ export default function Users() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    if(editIndex === undefined)
-    {
+    if (editIndex === undefined) {
       CreateUser({
-        variables:{
+        variables: {
           first_name: data.get("first-name"),
           last_name: data.get("last-name"),
           email: data.get("email"),
           password: data.get("password"),
-          isAdmin: data.get("isadmin")=== 'true',
-        }
-      })
-    }else{
+          isAdmin: data.get("isadmin") === "true",
+        },
+      });
+    } else {
       data.append("_id", rows[editIndex]._id);
       UpdateUser({
         variables: {
@@ -284,7 +231,7 @@ export default function Users() {
           lastName: data.get("last-name"),
           email: data.get("email"),
           password: data.get("password"),
-          isAdmin: data.get("isadmin") === 'true',
+          isAdmin: data.get("isadmin") === "true",
         },
       });
     }
@@ -293,8 +240,7 @@ export default function Users() {
 
   return (
     <TableContainer component={Paper}>
-      <Button sx={{ mx: 2, my: 1 }} variant="outlined"
-      onClick={handleCreate}>
+      <Button sx={{ mx: 2, my: 1 }} variant="outlined" onClick={handleCreate}>
         Create User
       </Button>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -308,10 +254,7 @@ export default function Users() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
+          {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row) => (
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">
                 {row.first_name}
@@ -326,20 +269,12 @@ export default function Users() {
                 {row.password}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.isAdmin? "Admin":"User"}
+                {row.isAdmin ? "Admin" : "User"}
               </TableCell>
-              <TableCell
-                style={{ width: 160 }}
-                align="right"
-                onClick={() => handleEdit(row._id)}
-              >
+              <TableCell style={{ width: 160 }} align="right" onClick={() => handleEdit(row._id)}>
                 edit
               </TableCell>
-              <TableCell
-                style={{ width: 160 }}
-                align="right"
-                onClick={() => handleDelete(row._id)}
-              >
+              <TableCell style={{ width: 160 }} align="right" onClick={() => handleDelete(row._id)}>
                 delete
               </TableCell>
             </TableRow>
@@ -372,21 +307,14 @@ export default function Users() {
           </TableRow>
         </TableFooter>
       </Table>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style} component="form" onSubmit={handleSubmit}>
           <TextField
             required
             id="first-name"
             name="first-name"
             label="FirstName"
-            defaultValue={
-              editIndex !== undefined ? rows[editIndex].first_name : ""
-            }
+            defaultValue={editIndex !== undefined ? rows[editIndex].first_name : ""}
           />
           <TextField
             required
@@ -394,9 +322,7 @@ export default function Users() {
             id="last-name"
             name="last-name"
             label="LastName"
-            defaultValue={
-              editIndex !== undefined ? rows[editIndex].last_name : ""
-            }
+            defaultValue={editIndex !== undefined ? rows[editIndex].last_name : ""}
           />
           <TextField
             required
@@ -412,21 +338,16 @@ export default function Users() {
             id="password"
             name="password"
             label="password"
-            defaultValue={
-              editIndex !== undefined ? rows[editIndex].password : ""
-            }
+            defaultValue={editIndex !== undefined ? rows[editIndex].password : ""}
           />
-          <FormControl fullWidth sx={{mt:2}}>
-          <InputLabel id="select-label">Age</InputLabel>
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel id="select-label">Age</InputLabel>
             <Select
               labelId="select-label"
               id="isadmin"
               name="isadmin"
-              defaultValue={
-                editIndex !== undefined ? rows[editIndex].isAdmin==true:""
-              }
-              label="admin"
-            >
+              defaultValue={editIndex !== undefined ? rows[editIndex].isAdmin == true : ""}
+              label="admin">
               <MenuItem value={true}>Admin</MenuItem>
               <MenuItem value={false}>User</MenuItem>
             </Select>
@@ -436,11 +357,7 @@ export default function Users() {
               Submit
             </Button>
 
-            <Button
-              onClick={() => handleClose()}
-              type="close"
-              variant="contained"
-            >
+            <Button onClick={() => handleClose()} type="close" variant="contained">
               close
             </Button>
           </Stack>

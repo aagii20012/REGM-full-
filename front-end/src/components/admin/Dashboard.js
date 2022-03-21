@@ -18,8 +18,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "./listItems";
-import Users from "./Users";
-import { useNavigate } from 'react-router-dom';
+import Users from "./users";
+import { useNavigate } from "react-router-dom";
 import { gql, useLazyQuery } from "@apollo/client";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 
@@ -70,9 +70,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const DECODE = gql`
-  query($token:String!){
-    Decode(token:$token)
-    {
+  query ($token: String!) {
+    Decode(token: $token) {
       isAdmin
     }
   }
@@ -83,26 +82,25 @@ const mdTheme = createTheme();
 function DashboardContent() {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
-  const [token, setToken] = React.useState(localStorage.getItem('token'));
+  const [token, setToken] = React.useState(localStorage.getItem("token"));
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const [Decode] = useLazyQuery(DECODE,{
-    onCompleted:(encrypt)=>{
-      if(!encrypt.Decode.isAdmin)
-      {
-        navigate('/')
+  const [Decode] = useLazyQuery(DECODE, {
+    onCompleted: (encrypt) => {
+      if (!encrypt.Decode.isAdmin) {
+        navigate("/");
       }
-    }
+    },
   });
 
   React.useEffect(() => {
     Decode({
-      variables:{
-        token:token
-      }
-    })
-  });
+      variables: {
+        token: token,
+      },
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -111,9 +109,8 @@ function DashboardContent() {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: "24px", 
-            }}
-          >
+              pr: "24px",
+            }}>
             <IconButton
               edge="start"
               color="inherit"
@@ -122,17 +119,10 @@ function DashboardContent() {
               sx={{
                 marginRight: "36px",
                 ...(open && { display: "none" }),
-              }}
-            >
+              }}>
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
+            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               Dashboard
             </Typography>
             <IconButton color="inherit">
@@ -149,8 +139,7 @@ function DashboardContent() {
               alignItems: "center",
               justifyContent: "flex-end",
               px: [1],
-            }}
-          >
+            }}>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
@@ -164,15 +153,11 @@ function DashboardContent() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            backgroundColor: (theme) => (theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900]),
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
-          }}
-        >
+          }}>
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>

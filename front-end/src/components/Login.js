@@ -1,4 +1,4 @@
-import {useState,useEffect} from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { gql, useLazyQuery } from "@apollo/client";
 import { Alert } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -26,43 +26,40 @@ const VALIDATION = gql`
   }
 `;
 const DECODE = gql`
-  query($token:String!){
-    Decode(token:$token)
-    {
+  query ($token: String!) {
+    Decode(token: $token) {
       isAdmin
     }
   }
 `;
 
-function Login() {
-  let navigate = useNavigate();
-  const [Login] = useLazyQuery(VALIDATION,{
-    onCompleted:(encrypt)=>{
-      console.log(encrypt)
-      localStorage.setItem('token', encrypt.Login.token);
-      Decode({
-        variables:{
-          token:encrypt.Login.token
-        }
-      })
-    },
-    onError:(error)=>{
-      console.log("error is", error.message);
-      setErrorMessage(error.message);
-    }
-  });
-  const [Decode] = useLazyQuery(DECODE,{
-    onCompleted:(encrypt)=>{
-      console.log(encrypt.Decode.isAdmin)
-      if(encrypt.Decode.isAdmin)
-      {
-        navigate('/admin')
-      }
-      else navigate('/')
-    }
-  });
+function SignIn() {
   const [errorMessage, setErrorMessage] = useState("");
 
+  let navigate = useNavigate();
+  const [Login] = useLazyQuery(VALIDATION, {
+    onCompleted: (encrypt) => {
+      console.log(encrypt);
+      localStorage.setItem("token", encrypt.Login.token);
+      Decode({
+        variables: {
+          token: encrypt.Login.token,
+        },
+      });
+    },
+    onError: (error) => {
+      console.log("error is", error.message);
+      setErrorMessage(error.message);
+    },
+  });
+  const [Decode] = useLazyQuery(DECODE, {
+    onCompleted: (encrypt) => {
+      console.log(encrypt.Decode.isAdmin);
+      if (encrypt.Decode.isAdmin) {
+        navigate("/admin");
+      } else navigate("/");
+    },
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     const formValue = new FormData(event.currentTarget);
@@ -88,8 +85,7 @@ function Login() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -101,22 +97,8 @@ function Login() {
               {errorMessage}
             </Alert>
           )}
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
             <TextField
               margin="normal"
               required
@@ -127,16 +109,8 @@ function Login() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
@@ -158,4 +132,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;

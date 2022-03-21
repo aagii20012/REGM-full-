@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
-import Navbar from './main/Navbar'
-import Suggest from './main/Suggest'
-import Main from './main/Main'
-import Footer from './main/Footer'
+import React, { useState } from "react";
+import Navbar from "./main/navbar";
+import Suggest from "./main/suggest";
+import Main from "./main/main";
+import Footer from "./main/footer";
 
-
-function MainPage(user) {
+function mainPage(user) {
   return (
     <>
-        <Navbar user={user} />
-        <Suggest/>
-        <Main/>
-        <Footer/>
+      <Navbar user={user} />
+      <Suggest />
+      <Main />
+      <Footer />
     </>
-  )
+  );
 }
 
-export default MainPage
+export default mainPage;
